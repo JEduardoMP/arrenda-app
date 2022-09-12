@@ -1,0 +1,37 @@
+version: "3"
+services:
+  react:
+    image: react-app
+    build: ./client/
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - arrenda-app
+    volumes:
+      - /usr/src/app
+
+  server:
+    image: server
+    restart: always
+    build: ./server/
+    ports:
+      - "5000:5000"
+    networks:
+      - arrenda-app
+
+  mongo:
+    image: mongo:4.4-bionic
+    ports:
+      - 27017:27017
+    networks:
+      - arrenda-app
+    volumes:
+      - mongo-data:/data/db
+  
+networks:
+  arrenda-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
